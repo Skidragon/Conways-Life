@@ -38,24 +38,29 @@ class App extends Component {
       menuActive: false,
       playActive: false
     };
-    
   }
   componentDidMount() {
     this.setState({
       menuActive: false,
       playActive: false
-    })
+    });
   }
-    toggleState = stateName => {
+  componentWillUnmount() {
+    this.setState({
+      playActive: false
+    });
+  }
+  toggleState = stateName => {
     const boolState = this.state[stateName];
-    if(stateName === "playActive") {
+    if (stateName === "playActive") {
       this.setState({ [stateName]: !boolState }, this.onAnimFrame);
       return;
-    }
-    else if (typeof boolState === "boolean") {
+    } else if (typeof boolState === "boolean") {
       this.setState({ [stateName]: !boolState });
     } else {
-      console.error("toggleState: works only with a state name that has a boolean type");
+      console.error(
+        "toggleState: works only with a state name that has a boolean type"
+      );
     }
   };
 
@@ -63,20 +68,22 @@ class App extends Component {
    * Called every frame of animation
    */
   onAnimFrame = () => {
-      if (this.state.playActive) {
-          requestAnimationFrame(() => { this.onAnimFrame(); });
-      }
-  }
+    if (this.state.playActive) {
+      requestAnimationFrame(() => {
+        this.onAnimFrame();
+      });
+    }
+  };
   render() {
     return (
       <Fragment>
         {/* <GlobalStyle /> */}
-        <canvas ref="canvas" width="500"height="500" />        
-        <ControlsMenu 
-        toggleState={this.toggleState}
-        playActive = {this.state.playActive}
-        onAnimFrame = {this.onAnimFrame}
-         />
+        <canvas ref="canvas" width="500" height="500" />
+        <ControlsMenu
+          toggleState={this.toggleState}
+          playActive={this.state.playActive}
+          onAnimFrame={this.onAnimFrame}
+        />
         <HeaderPanel />
         <CarouselPanel />
         <NavigationContainer
