@@ -46,7 +46,7 @@ class App extends Component {
       playActive: false
     })
   }
-  toggleState = stateName => {
+    toggleState = stateName => {
     const boolState = this.state[stateName];
     if(stateName === "playActive") {
       this.setState({ [stateName]: !boolState }, this.onAnimFrame);
@@ -58,27 +58,19 @@ class App extends Component {
       console.error("toggleState: works only with a state name that has a boolean type");
     }
   };
-  
-  componentDidMount() {
-    this.setState({
-      menuActive: false,
-      playActive: false
-    })
-}
 
   /**
    * Called every frame of animation
    */
   onAnimFrame = () => {
       if (this.state.playActive) {
-        console.log("Hello")
           requestAnimationFrame(() => { this.onAnimFrame(); });
-      }   
+      }
   }
   render() {
     return (
       <Fragment>
-        <GlobalStyle />
+        {/* <GlobalStyle /> */}
         <canvas ref="canvas" width="500"height="500" />        
         <ControlsMenu 
         toggleState={this.toggleState}
