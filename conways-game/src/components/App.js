@@ -49,7 +49,7 @@ class App extends Component {
   toggleState = stateName => {
     const boolState = this.state[stateName];
     if(stateName === "playActive") {
-      this.setState({ [stateName]: !boolState }, this.onAnimFrame.bind(this.state.playActive));
+      this.setState({ [stateName]: !boolState }, this.onAnimFrame);
       return;
     }
     else if (typeof boolState === "boolean") {
@@ -72,7 +72,7 @@ class App extends Component {
   onAnimFrame = () => {
       if (this.state.playActive) {
         console.log("Hello")
-          requestAnimationFrame(() => { this.onAnimFrame(this.state.playActive); });
+          requestAnimationFrame(() => { this.onAnimFrame(); });
       }   
   }
   render() {
