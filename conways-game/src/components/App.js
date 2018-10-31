@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
 import { createGlobalStyle } from "styled-components";
-import Canvas from "../components/Canvas";
 import ControlsMenu from "../components/ControlsMenu/ControlsContainer";
 import HeaderPanel from "../components/PresetSection/HeaderPanel";
 import CarouselPanel from "../components/PresetSection/CarouselPanel";
@@ -39,37 +38,58 @@ class App extends Component {
       menuActive: false,
       playActive: false
     };
+    
   }
   componentDidMount() {
     this.setState({
       menuActive: false,
       playActive: false
-    });
+    })
   }
   toggleState = stateName => {
     const boolState = this.state[stateName];
-    if (typeof boolState === "boolean") {
+    if(stateName === "playActive") {
+      this.setState({ [stateName]: !boolState }, this.onAnimFrame.bind(this.state.playActive));
+      return;
+    }
+    else if (typeof boolState === "boolean") {
       this.setState({ [stateName]: !boolState });
     } else {
       console.error("toggleState: works only with a state name that has a boolean type");
     }
   };
+  
+  componentDidMount() {
+    this.setState({
+      menuActive: false,
+      playActive: false
+    })
+}
 
+  /**
+   * Called every frame of animation
+   */
+  onAnimFrame = () => {
+      if (this.state.playActive) {
+        console.log("Hello")
+          requestAnimationFrame(() => { this.onAnimFrame(this.state.playActive); });
+      }   
+  }
   render() {
-    const { menuActive, playActive } = this.state;
     return (
       <Fragment>
         <GlobalStyle />
-        <Canvas playActive={playActive} />
+        <canvas ref="canvas" width="500"height="500" />        
         <ControlsMenu 
         toggleState={this.toggleState}
-        playActive = {playActive}
+        playActive = {this.state.playActive}
+        onAnimFrame = {this.onAnimFrame}
          />
         <HeaderPanel />
         <CarouselPanel />
         <NavigationContainer
           toggleState={this.toggleState}
-          menuActive={menuActive}
+          menuActive={this.state.menuActive}
         />
       </Fragment>
     );
