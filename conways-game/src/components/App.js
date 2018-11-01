@@ -40,10 +40,70 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    this.setState({
-      menuActive: false,
-      playActive: false
-    });
+    this.setState(
+      {
+        menuActive: false,
+        playActive: false
+      },
+      () => {
+        this.canvas = this.refs.canvas;
+        this.gridSize = 20;
+        this.squareLen = this.canvas.width / this.gridSize;
+        this.ctx = this.canvas.getContext("2d");
+        this.initialDrawing();
+      }
+    );
+  }
+  initialDrawing() {
+    console.log("squareLength: ", this.squareLen);
+    console.log("gridSize: ", this.gridSize);
+    this.ctx.beginPath();
+    for (let i = 0; i < this.gridSize; i++) {
+      for (let j = 0; j < this.gridSize; j++) {
+        let row = i;
+        let column = j;
+        this.ctx.rect(
+          column * this.squareLen,
+          row * this.squareLen,
+          this.squareLen,
+          this.squareLen
+        );
+        this.ctx.stroke();
+      }
+    }
+  }
+  updateRect(e) {
+    const clickedSqX = Math.ceil(e.clientX / this.squareLen);
+    const clickedSqY = Math.ceil(e.clientY / this.squareLen);
+    console.log(`X: ${clickedSqX} -- Y: ${clickedSqY}`);
+    this.ctx.beginPath();
+    const currentImageData = this.ctx.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
+    this.ctx.rect(
+      (clickedSqX - 1) * this.squareLen,
+      (clickedSqY - 1) * this.squareLen,
+      this.squareLen,
+      this.squareLen
+    );
+
+    const pixel = this.getPixel(
+      currentImageData,
+      (clickedSqX - 1) * this.squareLen,
+      (clickedSqY - 1) * this.squareLen);
+    if (pixel[0] === 0) {
+      this.ctx.fillStyle = "white";
+    }
+    else {
+      this.ctx.fillStyle = "rgb(0,0,0)";
+    }
+    this.ctx.fill();
+    this.ctx.stroke();
+    const newImageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.putImageData(newImageData, 0, 0);
   }
   componentWillUnmount() {
     this.setState({
@@ -63,10 +123,7 @@ class App extends Component {
       );
     }
   };
-
-  /**
-   * Called every frame of animation
-   */
+  clear() {}
   onAnimFrame = () => {
     if (this.state.playActive) {
       requestAnimationFrame(() => {
@@ -74,11 +131,48 @@ class App extends Component {
       });
     }
   };
+  getPixel(imageData, x, y) {
+    const w = imageData.width;
+    const h = imageData.height;
+    if (x < 0 || x >= w || y < 0 || y >= h) {
+      return null;
+    }
+
+    const index = this.getPixelIndex(x, y, w);
+
+    return imageData.data.slice(index, index + 4);
+  }
+  putPixel(imageData, x, y) {
+    const w = imageData.width;
+    const h = imageData.height;
+
+    if (x < 0 || x >= w || y < 0 || y >= h) {
+      return null;
+    }
+
+    const index = this.getPixelIndex(x, y, w);
+
+    imageData[index] = 255;
+    imageData[index + 1] = 0;
+    imageData[index + 2] = 0;
+    imageData[index + 3] = 255;
+    this.ctx.putImageData(imageData, 0, 0);
+  }
+  getPixelIndex(x, y, width) {
+    return (y * width + x) * 4;
+  }
   render() {
     return (
       <Fragment>
-        {/* <GlobalStyle /> */}
-        <canvas ref="canvas" width="500" height="500" />
+        <GlobalStyle />
+        <canvas
+          ref="canvas"
+          width="500"
+          height="500"
+          onClick={e => {
+            this.updateRect(e);
+          }}
+        />
         <ControlsMenu
           toggleState={this.toggleState}
           playActive={this.state.playActive}
