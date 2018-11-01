@@ -68,21 +68,29 @@ class App extends Component {
           this.squareLen,
           this.squareLen
         );
+        this.ctx.fillStyle = "rgb(255,255,255)";
+        this.ctx.fill();
         this.ctx.stroke();
       }
     }
   }
   updateRect(e) {
+    // This gives me the coordinates of the square I clicked on
     const clickedSqX = Math.ceil(e.clientX / this.squareLen);
     const clickedSqY = Math.ceil(e.clientY / this.squareLen);
     console.log(`X: ${clickedSqX} -- Y: ${clickedSqY}`);
+
+
     this.ctx.beginPath();
+    // Getting the currentImageData to see if there is any squares
+    // that are colored or not colored
     const currentImageData = this.ctx.getImageData(
       0,
       0,
       this.canvas.width,
       this.canvas.height
     );
+    // This is where the square will be drawn
     this.ctx.rect(
       (clickedSqX - 1) * this.squareLen,
       (clickedSqY - 1) * this.squareLen,
@@ -90,18 +98,21 @@ class App extends Component {
       this.squareLen
     );
 
+
     const pixel = this.getPixel(
       currentImageData,
       (clickedSqX - 1) * this.squareLen,
       (clickedSqY - 1) * this.squareLen);
+      console.log(pixel);
     if (pixel[0] === 0) {
-      this.ctx.fillStyle = "white";
+      this.ctx.fillStyle = "rgb(255,255,255)";
     }
     else {
       this.ctx.fillStyle = "rgb(0,0,0)";
     }
     this.ctx.fill();
     this.ctx.stroke();
+
     const newImageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.putImageData(newImageData, 0, 0);
   }
