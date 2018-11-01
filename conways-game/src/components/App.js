@@ -5,7 +5,7 @@ import HeaderPanel from "../components/PresetSection/HeaderPanel";
 import CarouselPanel from "../components/PresetSection/CarouselPanel";
 import { colors } from "../utils/variables";
 import NavigationContainer from "./NavigationMenu/NavigationContainer";
-
+import Cell from "./Canvas/Cell";
 const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -30,24 +30,27 @@ const GlobalStyle = createGlobalStyle`
         display: none;
     }
 `;
-
+const white = "rgb(255,255,255)";
+const black = "rgb(0,0,0)";
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       menuActive: false,
-      playActive: false
+      playActive: false,
+      cells: []
     };
   }
   componentDidMount() {
+    this.gridSize = 20;
     this.setState(
       {
         menuActive: false,
-        playActive: false
+        playActive: false,
+        cells: Array.apply(null, Array(this.gridSize*this.gridSize)).map(Number.prototype.valueOf,0)
       },
       () => {
         this.canvas = this.refs.canvas;
-        this.gridSize = 20;
         this.squareLen = this.canvas.width / this.gridSize;
         this.ctx = this.canvas.getContext("2d");
         this.initialDrawing();
@@ -55,33 +58,25 @@ class App extends Component {
     );
   }
   initialDrawing() {
-    console.log("squareLength: ", this.squareLen);
-    console.log("gridSize: ", this.gridSize);
+    const { cells } = this.state;
     this.ctx.beginPath();
-    for (let i = 0; i < this.gridSize; i++) {
-      for (let j = 0; j < this.gridSize; j++) {
+    for (let i = 0; i < Math.sqrt(cells.length); i++) {
+      for (let j = 0; j < Math.sqrt(cells.length); j++) {
         let row = i;
         let column = j;
-        this.ctx.rect(
-          column * this.squareLen,
-          row * this.squareLen,
-          this.squareLen,
-          this.squareLen
-        );
-        this.ctx.fillStyle = "rgb(255,255,255)";
-        this.ctx.fill();
-        this.ctx.stroke();
+        let cell = new Cell(this.ctx, column * this.squareLen, row * this.squareLen, this.squareLen);
+        cell.draw();
       }
     }
   }
-  updateRect(e) {
+
+  fillRect(e) {
     // This gives me the coordinates of the square I clicked on
     const clickedSqX = Math.ceil(e.clientX / this.squareLen);
     const clickedSqY = Math.ceil(e.clientY / this.squareLen);
     console.log(`X: ${clickedSqX} -- Y: ${clickedSqY}`);
 
 
-    this.ctx.beginPath();
     // Getting the currentImageData to see if there is any squares
     // that are colored or not colored
     const currentImageData = this.ctx.getImageData(
@@ -89,27 +84,27 @@ class App extends Component {
       0,
       this.canvas.width,
       this.canvas.height
-    );
-    // This is where the square will be drawn
-    this.ctx.rect(
+      );
+      // This is where the square will be drawn
+      this.ctx.beginPath();
+      
+      this.ctx.rect(
       (clickedSqX - 1) * this.squareLen,
       (clickedSqY - 1) * this.squareLen,
       this.squareLen,
       this.squareLen
-    );
-
+      );
 
     const pixel = this.getPixel(
       currentImageData,
       (clickedSqX - 1) * this.squareLen,
       (clickedSqY - 1) * this.squareLen);
-      console.log(pixel);
-    if (pixel[0] === 0) {
-      this.ctx.fillStyle = "rgb(255,255,255)";
-    }
-    else {
-      this.ctx.fillStyle = "rgb(0,0,0)";
-    }
+      if (pixel[0] === 0) {
+        this.ctx.fillStyle = white;
+      }
+      else {
+        this.ctx.fillStyle = black;
+      }
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -134,7 +129,12 @@ class App extends Component {
       );
     }
   };
-  clear() {}
+  clearHandler = () => {
+    console.log("cleared");
+    this.setState({
+      cells: Array.apply(null, Array(this.gridSize*this.gridSize)).map(Number.prototype.valueOf,0)
+    });
+  }
   onAnimFrame = () => {
     if (this.state.playActive) {
       requestAnimationFrame(() => {
@@ -181,10 +181,11 @@ class App extends Component {
           width="500"
           height="500"
           onClick={e => {
-            this.updateRect(e);
+            this.fillRect(e);
           }}
         />
         <ControlsMenu
+          clearHandler = {this.clearHandler}
           toggleState={this.toggleState}
           playActive={this.state.playActive}
           onAnimFrame={this.onAnimFrame}
