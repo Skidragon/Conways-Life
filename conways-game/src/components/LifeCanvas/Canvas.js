@@ -93,10 +93,14 @@ class Canvas extends Component {
     console.log(`N: ${n}\n S: ${s}`)
     // Check the north
     if(cells[n] !== undefined) {
-      for(let j = n - 1; j < n + 1; j++) {
-        if(cells[j] !== undefined && cells[j] === 1) {
+      if(cells[n] !== undefined && cells[n] === 1) {
+        count++;
+      }
+      if(cells[n+1] !== undefined && cells[n+1] === 1) {
           count++;
         }
+      if(cells[n-1] !== undefined && cells[n-1] === 1) {
+        count++;
       }
     }
     // West
@@ -109,11 +113,14 @@ class Canvas extends Component {
       count++;
     }
     if(cells[s] !== undefined) {
-      for(let j = s - 1; j < s + 1; j++) {
-        if(cells[j] !== undefined && cells[j] === 1) {
+      if(cells[s] !== undefined && cells[s] === 1) {
+        count++;
+      }
+      if(cells[s+1] !== undefined && cells[s+1] === 1) {
           count++;
-          console.log("south");
         }
+      if(cells[s-1] !== undefined && cells[s-1] === 1) {
+        count++;
       }
     }
     return count;
