@@ -1,44 +1,14 @@
-const white = "rgb(255,255,255)";
-const black = "rgb(0,0,0)";
-function parseRGBValues() {
-
-}
-class Cell {
-    constructor(ctx, length) {
-        this.ctx = ctx;
-        this.length = length;
-        this.color = white;
-        this.isToggled = false;
-        this.x = 0;
-        this.y = 0;
-    }
-    setCoords(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    draw(x, y) {
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.color;
-        this.ctx.rect(
-            this.x,
-            this.y,
-            this.length,
-            this.length
-          );
-        this.ctx.fill();
-        this.ctx.stroke();
-    }
-    switchColors() {
-        console.log(this.isToggled, this.color);
-        if(this.isToggled === false) {
-            this.color = black;
-            this.isToggled = true;
-        }
-        else {
-            this.color = white;
-            this.isToggled = false;
-        }
-    }
-}
+import React from 'react';
+import styled from "styled-components";
+const Cell = styled.div`
+    width: 100%;
+    background: ${props => props['data-togglestate']? "lightblue" : "white"};
+    border: 1px solid black;
+    &::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+`;
 
 export default Cell;
