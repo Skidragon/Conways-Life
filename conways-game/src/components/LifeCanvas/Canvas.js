@@ -74,16 +74,16 @@ class Canvas extends Component {
       }
     }
     console.log(newCells);
+    
     this.setState({
       cells: newCells
-    })
-    // this.setState({
-    //   cells
-    // }, () => {
-    //   if(this.props.playActive) {
-    //   return this.playAnimation()
-    //   }
-    // });
+    }, () => {
+      setTimeout(() => {
+        if(this.props.playActive) {
+        return this.playAnimation()
+        }
+      }, 200)
+    });
   }
 
   checkNeighbors(cells, i) {
