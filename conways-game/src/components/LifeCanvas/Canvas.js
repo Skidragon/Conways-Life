@@ -5,8 +5,8 @@ import Cell from "./Cell";
 import CellRow from "./CellRow";
 const CanvasWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(15, 1fr);
+  grid-template-columns: repeat(${props => props.gridSize}, 1fr);
+  grid-template-rows: repeat(${props => props.gridSize}, 1fr);
   flex-flow: column;
   width: 100%;
   max-width: 80rem;
@@ -37,10 +37,10 @@ class Canvas extends Component {
    */
   componentDidMount() {
     this.gridSize = 15;
-
+    this.fullArea = this.gridSize*this.gridSize;
     this.setState({
       animActive: this.props.playActive,
-      cells: Array.apply(null, Array(225)).map(Number.prototype.valueOf,0)
+      cells: Array.apply(null, Array(this.fullArea)).map(Number.prototype.valueOf,0)
     });
     // Request initial animation frame
   }
@@ -73,7 +73,7 @@ class Canvas extends Component {
    */
   render() {
         return (
-          <CanvasWrapper onClick = {e => {
+          <CanvasWrapper gridSize = {this.gridSize} onClick = {e => {
               this.toggleCell(e);
             }}>
               {this.state.cells.map((cell, i) => {
