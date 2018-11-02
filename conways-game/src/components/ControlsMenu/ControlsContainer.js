@@ -47,6 +47,7 @@ const ControlsContainer = (props) => {
                 <ControlButton
                 onClick={() => {
                     props.toggleState("playActive");
+                    props.playAnimation();
                 }}
                 ><Icon src = {props.playActive ? pauseIcon : playIcon} /></ControlButton>
                 <ControlButton><Icon src = {stopIcon} /></ControlButton>

@@ -60,11 +60,7 @@ class App extends Component {
     return (
       <Fragment>
         <GlobalStyle />
-        <Canvas />
-        <ControlsContainer
-          toggleState = {this.toggleState}
-          playActive = { playActive }
-          />
+        <Canvas playActive = {playActive} toggleState = {this.toggleState}/>
         <HeaderPanel />
         <CarouselPanel />
         <NavigationContainer
