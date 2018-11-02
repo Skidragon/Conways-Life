@@ -155,6 +155,15 @@ class Canvas extends Component {
     });
   };
 
+  clearCanvas = () => {
+    this.setState({
+      cells: Array.apply(null, Array(this.fullArea)).map(
+        Number.prototype.valueOf,
+        0
+      ),
+    });
+  }
+
   /**
    * Render the canvas
    */
@@ -173,7 +182,8 @@ class Canvas extends Component {
       </CanvasWrapper>
       <ControlsContainer playActive = {this.props.playActive} 
       playAnimation = {this.playAnimation} 
-      toggleState={this.props.toggleState}/>
+      toggleState={this.props.toggleState}
+      clearCanvas={this.clearCanvas}/>
       </Fragment>
     );
   }

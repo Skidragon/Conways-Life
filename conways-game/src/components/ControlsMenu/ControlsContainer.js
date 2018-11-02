@@ -50,7 +50,9 @@ const ControlsContainer = (props) => {
                     props.playAnimation();
                 }}
                 ><Icon src = {props.playActive ? pauseIcon : playIcon} /></ControlButton>
-                <ControlButton><Icon src = {stopIcon} /></ControlButton>
+                <ControlButton onClick = {() => {
+                    props.clearCanvas();
+                }}><Icon src = {stopIcon} /></ControlButton>
                 <ControlButton 
                 onClick={() => {
                     props.toggleState("menuActive");
