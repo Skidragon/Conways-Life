@@ -27,7 +27,8 @@ class Canvas extends Component {
     super(props);
 
     this.state = {
-      cells: []
+      cells: [],
+      generationCount: 0
     };
   }
 
@@ -42,13 +43,15 @@ class Canvas extends Component {
         Number.prototype.valueOf,
         0
       ),
+      generationCount: 0
     });
     // Request initial animation frame
   }
 
   componentWillUnmount() {
     this.setState({
-      cells: []
+      cells: [],
+      generationCount: 0
     });
   }
 
@@ -57,17 +60,17 @@ class Canvas extends Component {
     const newCells = this.state.cells.slice();
     let count = 0;
     for (let i = 0; i < cells.length; i++) {
-      console.log(`Turn ${i}-----------------`)
+      // console.log(`Turn ${i}-----------------`)
       if (cells[i] === 0) {
         count = this.checkNeighbors(cells, i);
-        console.log("White cell: ", count);
+        // console.log("White cell: ", count);
         if(count === 3) {
           newCells[i] = 1;
         }
       } 
       else {
         count = this.checkNeighbors(cells,i);
-        console.log("lightblue cell: ", count);
+        // console.log("lightblue cell: ", count);
         if(count >= 4 || count < 2) {
           newCells[i] = 0;
         }
@@ -76,7 +79,8 @@ class Canvas extends Component {
     console.log(newCells);
     
     this.setState({
-      cells: newCells
+      cells: newCells,
+      generationCount: ++this.state.generationCount
     }, () => {
       setTimeout(() => {
         if(this.props.playActive) {
@@ -160,6 +164,7 @@ class Canvas extends Component {
         Number.prototype.valueOf,
         0
       ),
+      generationCount: 0
     });
   }
 
@@ -182,7 +187,8 @@ class Canvas extends Component {
       <ControlsContainer playActive = {this.props.playActive} 
       playAnimation = {this.playAnimation} 
       toggleState={this.props.toggleState}
-      clearCanvas={this.clearCanvas}/>
+      clearCanvas={this.clearCanvas}
+      generation = {this.state.generationCount}/>
       </Fragment>
     );
   }

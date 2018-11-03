@@ -37,6 +37,10 @@ const Icon = styled.img`
     width: 80%;
     pointer-events: none;
 `;
+const GenerationBox = styled(ControlButton)`
+    color: ${colors.white};
+    font-size: 5rem;
+`;
 const ControlsContainer = (props) => {
         return (
             <ControlsWrapper>
@@ -45,6 +49,7 @@ const ControlsContainer = (props) => {
                 }}
                 ><Icon src = {trashIcon} /></ControlButton>
             <ControlButton><Icon src = {settingsIcon} /></ControlButton>
+                <GenerationBox>{props.generation}</GenerationBox>
                 <ControlButton
                 onClick={() => {
                     props.toggleState("playActive");
