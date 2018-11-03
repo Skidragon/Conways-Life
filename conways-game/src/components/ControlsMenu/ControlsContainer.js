@@ -3,11 +3,9 @@ import styled from "styled-components";
 import { colors } from "../../utils/variables";
 import playIcon from "./assets/play-circle.svg";
 import pauseIcon from "./assets/pause-circle.svg";
-import stopIcon from "./assets/stop-circle.svg";
-import zoomOutIcon from "./assets/zoom-out.svg";
-import zoomInIcon from "./assets/zoom-in.svg";
 import menuIcon from "./assets/menu.svg";
-
+import settingsIcon from "./assets/settings.svg";
+import trashIcon from "./assets/trash.svg";
 const ControlsWrapper = styled.div`
     display: flex;
     justify-content: space-between;
@@ -39,17 +37,25 @@ const Icon = styled.img`
     width: 80%;
     pointer-events: none;
 `;
+const GenerationBox = styled(ControlButton)`
+    color: ${colors.white};
+    font-size: 6rem;
+`;
 const ControlsContainer = (props) => {
         return (
             <ControlsWrapper>
-                <ControlButton><Icon src = {zoomInIcon} /></ControlButton>
-                <ControlButton><Icon src = {zoomOutIcon} /></ControlButton>
+                <ControlButton onClick = {() => {
+                    props.clearCanvas();
+                }}
+                ><Icon src = {trashIcon} /></ControlButton>
+                <GenerationBox>{props.generation}</GenerationBox>
                 <ControlButton
                 onClick={() => {
                     props.toggleState("playActive");
+                    props.playAnimation();
                 }}
                 ><Icon src = {props.playActive ? pauseIcon : playIcon} /></ControlButton>
-                <ControlButton><Icon src = {stopIcon} /></ControlButton>
+                <ControlButton><Icon src = {settingsIcon} /></ControlButton>
                 <ControlButton 
                 onClick={() => {
                     props.toggleState("menuActive");

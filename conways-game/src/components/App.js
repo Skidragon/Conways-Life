@@ -6,6 +6,7 @@ import HeaderPanel from "../components/PresetSection/HeaderPanel";
 import CarouselPanel from "../components/PresetSection/CarouselPanel";
 import { colors } from "../utils/variables";
 import NavigationContainer from "./NavigationMenu/NavigationContainer";
+import ControlsContainer from "../components/ControlsMenu/ControlsContainer";
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -47,24 +48,19 @@ class App extends Component {
     });
   }
   toggleState = stateName => {
-    const boolState = this.state[stateName];
+    let boolState = this.state[stateName];
     if (typeof boolState === "boolean") {
       this.setState({ [stateName]: !boolState });
     } else {
       console.error("toggleState: works only with a state name that has a boolean type");
     }
   };
-
   render() {
     const { menuActive, playActive } = this.state;
     return (
       <Fragment>
         <GlobalStyle />
-        <Canvas playActive={playActive} />
-        <ControlsMenu 
-        toggleState={this.toggleState}
-        playActive = {playActive}
-         />
+        <Canvas playActive = {playActive} toggleState = {this.toggleState}/>
         <HeaderPanel />
         <CarouselPanel />
         <NavigationContainer
