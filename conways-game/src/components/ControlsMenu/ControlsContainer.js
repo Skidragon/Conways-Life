@@ -48,7 +48,6 @@ const ControlsContainer = (props) => {
                     props.clearCanvas();
                 }}
                 ><Icon src = {trashIcon} /></ControlButton>
-            <ControlButton><Icon src = {settingsIcon} /></ControlButton>
                 <GenerationBox>{props.generation}</GenerationBox>
                 <ControlButton
                 onClick={() => {
@@ -56,6 +55,7 @@ const ControlsContainer = (props) => {
                     props.playAnimation();
                 }}
                 ><Icon src = {props.playActive ? pauseIcon : playIcon} /></ControlButton>
+                <ControlButton><Icon src = {settingsIcon} /></ControlButton>
                 <ControlButton 
                 onClick={() => {
                     props.toggleState("menuActive");
