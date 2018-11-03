@@ -39,7 +39,7 @@ const Icon = styled.img`
 `;
 const GenerationBox = styled(ControlButton)`
     color: ${colors.white};
-    font-size: 5rem;
+    font-size: 6rem;
 `;
 const ControlsContainer = (props) => {
         return (
