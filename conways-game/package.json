@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "babel-plugin-styled-components": "^1.8.0",
-    "gatsby": "^2.0.0",
+    "gatsby": "^2.0.38",
     "gatsby-cli": "^2.4.4",
     "gatsby-plugin-styled-components": "^3.0.1",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "styled-components": "^4.0.2"
+    "gatsby-source-filesystem": "^2.0.7",
+    "gatsby-transformer-remark": "^2.1.11",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "styled-components": "^4.0.3"
   }
 }
