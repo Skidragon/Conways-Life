@@ -90,10 +90,10 @@ class Canvas extends Component {
     let count = 0;
     const n = this.getNIndex(cells, i);
     const s = this.getSIndex(cells, i);
-    console.log(`N: ${n}\n S: ${s}`)
+    // console.log(`N: ${n}\n S: ${s}`)
     // Check the north
     if(cells[n] !== undefined) {
-      if(cells[n] !== undefined && cells[n] === 1) {
+      if(cells[n] === 1) {
         count++;
       }
       if(cells[n+1] !== undefined && cells[n+1] === 1) {
@@ -109,11 +109,10 @@ class Canvas extends Component {
     }
     // East
     if(cells[i+1] !== undefined && cells[i+1] === 1) {
-      console.log("east");
       count++;
     }
     if(cells[s] !== undefined) {
-      if(cells[s] !== undefined && cells[s] === 1) {
+      if(cells[s] === 1) {
         count++;
       }
       if(cells[s+1] !== undefined && cells[s+1] === 1) {
