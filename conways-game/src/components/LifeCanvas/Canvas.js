@@ -36,7 +36,7 @@ class Canvas extends Component {
    * After the component has mounted
    */
   componentDidMount() {
-    this.gridSize = 3;
+    this.gridSize = 15;
     this.fullArea = this.gridSize * this.gridSize;
     this.setState({
       cells: Array.apply(null, Array(this.fullArea)).map(
